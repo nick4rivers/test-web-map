@@ -1,0 +1,575 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="initial-scale=1,user-scalable=no,maximum-scale=1,width=device-width">
+    <meta name="mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <link rel="stylesheet" href="css/leaflet.css">
+    <link rel="stylesheet" href="css/qgis2web.css">
+    <link rel="stylesheet" href="css/fontawesome-all.min.css">
+    <link rel="stylesheet" href="css/MarkerCluster.css">
+    <link rel="stylesheet" href="css/MarkerCluster.Default.css">
+    <link rel="stylesheet" href="css/leaflet-measure.css">
+    <style>
+        html,
+        body,
+        #map {
+            width: 100%;
+            height: 100%;
+            padding: 0;
+            margin: 0;
+        }
+    </style>
+    <title></title>
+</head>
+
+<body>
+    <div id="map">
+    </div>
+    <script src="js/qgis2web_expressions.js"></script>
+    <script src="js/leaflet.js"></script>
+    <script src="js/leaflet.rotatedMarker.js"></script>
+    <script src="js/leaflet.pattern.js"></script>
+    <script src="js/leaflet-hash.js"></script>
+    <script src="js/Autolinker.min.js"></script>
+    <script src="js/rbush.min.js"></script>
+    <script src="js/labelgun.min.js"></script>
+    <script src="js/labels.js"></script>
+    <script src="js/leaflet-measure.js"></script>
+    <script src="js/leaflet.markercluster.js"></script>
+    <script src="data/Structure_Points_0.js"></script>
+    <script src="data/CEMArea_Current_1.js"></script>
+    <script src="data/Geomorph_Current_2.js"></script>
+    <script src="data/Complex_ZOI_3.js"></script>
+    <script>
+        var map = L.map('map', {
+            zoomControl: true,
+            maxZoom: 18,
+            minZoom: 1
+        }).fitBounds([
+            [44.30637976731119, -121.51755099787293],
+            [44.31570053955139, -121.50432726742179]
+        ]);
+
+        var Esri_WorldImagery = L.tileLayer(
+            'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}');
+
+        Esri_WorldImagery.addTo(map);
+
+
+
+
+
+
+
+
+
+
+
+        var hash = new L.Hash(map);
+        var autolinker = new Autolinker({
+            truncate: {
+                length: 30,
+                location: 'smart'
+            }
+        });
+        var measureControl = new L.Control.Measure({
+            position: 'topleft',
+            primaryLengthUnit: 'meters',
+            secondaryLengthUnit: 'kilometers',
+            primaryAreaUnit: 'sqmeters',
+            secondaryAreaUnit: 'hectares'
+        });
+        measureControl.addTo(map);
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+            .innerHTML = '';
+        document.getElementsByClassName('leaflet-control-measure-toggle')[0]
+            .className += ' fas fa-ruler';
+        var bounds_group = new L.featureGroup([]);
+
+        function setBounds() {}
+
+        function pop_Structure_Points_0(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['FID_'] !== null ? autolinker.link(feature.properties[
+                'FID_'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Complex'] !== null ? autolinker.link(feature
+                .properties['Complex'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Type</th>\
+                        <td>' + (feature.properties['Type'] !== null ? autolinker.link(feature.properties['Type']
+                .toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>PrimeObj</strong><br />' + (feature.properties['PrimeObj'] !== null ?
+                autolinker.link(feature.properties['PrimeObj'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Easting'] !== null ? autolinker.link(feature
+                .properties['Easting'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Northing'] !== null ? autolinker.link(feature
+                .properties['Northing'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Phase</th>\
+                        <td>' + (feature.properties['Phase'] !== null ? autolinker.link(feature.properties['Phase']
+                .toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">PhaseType</th>\
+                        <td>' + (feature.properties['PhaseType'] !== null ? autolinker.link(feature.properties[
+                'PhaseType'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {
+                maxHeight: 400
+            });
+        }
+
+        function style_Structure_Points_0_0(feature) {
+            switch (String(feature.properties['Type'])) {
+                case 'BDA':
+                    return {
+                        pane: 'pane_Structure_Points_0',
+                            radius: 10.0,
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(193,113,207,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'PALS':
+                    return {
+                        pane: 'pane_Structure_Points_0',
+                            radius: 10.0,
+                            opacity: 1,
+                            color: 'rgba(35,35,35,0.5)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(51,160,44,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'NULL':
+                    return {
+                        pane: 'pane_Structure_Points_0',
+                            radius: 4.0,
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(121,209,198,0.5)',
+                            interactive: true,
+                    }
+                    break;
+            }
+        }
+        map.createPane('pane_Structure_Points_0');
+        map.getPane('pane_Structure_Points_0').style.zIndex = 400;
+        map.getPane('pane_Structure_Points_0').style['mix-blend-mode'] = 'normal';
+        var layer_Structure_Points_0 = new L.geoJson(json_Structure_Points_0, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Structure_Points_0',
+            layerName: 'layer_Structure_Points_0',
+            pane: 'pane_Structure_Points_0',
+            onEachFeature: pop_Structure_Points_0,
+            pointToLayer: function (feature, latlng) {
+                var context = {
+                    feature: feature,
+                    variables: {}
+                };
+                return L.circleMarker(latlng, style_Structure_Points_0_0(feature));
+            },
+        });
+        var cluster_Structure_Points_0 = new L.MarkerClusterGroup({
+            showCoverageOnHover: false,
+            spiderfyDistanceMultiplier: 2
+        });
+        cluster_Structure_Points_0.addLayer(layer_Structure_Points_0);
+
+        bounds_group.addLayer(layer_Structure_Points_0);
+        cluster_Structure_Points_0.addTo(map);
+
+        function pop_CEMArea_Current_1(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Id'] !== null ? autolinker.link(feature.properties[
+                'Id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Stage</strong><br />' + (feature.properties['Stage'] !== null ?
+                autolinker.link(feature.properties['Stage'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>StageDesc</strong><br />' + (feature.properties['StageDesc'] !== null ?
+                autolinker.link(feature.properties['StageDesc'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Area_m</th>\
+                        <td>' + (feature.properties['Area_m'] !== null ? autolinker.link(feature.properties['Area_m']
+                .toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Area_ac'] !== null ? autolinker.link(feature
+                .properties['Area_ac'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {
+                maxHeight: 400
+            });
+        }
+
+        function style_CEMArea_Current_1_0(feature) {
+            switch (String(feature.properties['Stage'])) {
+                case 'Stage 2':
+                    return {
+                        pane: 'pane_CEMArea_Current_1',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(72,100,201,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Stage 5':
+                    return {
+                        pane: 'pane_CEMArea_Current_1',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(239,206,95,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Stage 7':
+                    return {
+                        pane: 'pane_CEMArea_Current_1',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(235,91,197,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'NULL':
+                    return {
+                        pane: 'pane_CEMArea_Current_1',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(24,216,75,0.5)',
+                            interactive: true,
+                    }
+                    break;
+            }
+        }
+        map.createPane('pane_CEMArea_Current_1');
+        map.getPane('pane_CEMArea_Current_1').style.zIndex = 401;
+        map.getPane('pane_CEMArea_Current_1').style['mix-blend-mode'] = 'normal';
+        var layer_CEMArea_Current_1 = new L.geoJson(json_CEMArea_Current_1, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_CEMArea_Current_1',
+            layerName: 'layer_CEMArea_Current_1',
+            pane: 'pane_CEMArea_Current_1',
+            onEachFeature: pop_CEMArea_Current_1,
+            style: style_CEMArea_Current_1_0,
+        });
+        bounds_group.addLayer(layer_CEMArea_Current_1);
+        map.addLayer(layer_CEMArea_Current_1);
+
+        function pop_Geomorph_Current_2(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Id'] !== null ? autolinker.link(feature.properties[
+                'Id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Surface</strong><br />' + (feature.properties['Surface'] !== null ?
+                autolinker.link(feature.properties['Surface'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Area</th>\
+                        <td>' + (feature.properties['Area'] !== null ? autolinker.link(feature.properties['Area']
+                .toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {
+                maxHeight: 400
+            });
+        }
+
+        function style_Geomorph_Current_2_0(feature) {
+            switch (String(feature.properties['Surface'])) {
+                case 'NULL':
+                    return {
+                        pane: 'pane_Geomorph_Current_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(76,214,157,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Active Channel':
+                    return {
+                        pane: 'pane_Geomorph_Current_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(234,226,58,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Disconnected Floodplain':
+                    return {
+                        pane: 'pane_Geomorph_Current_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(113,117,216,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Floodplain':
+                    return {
+                        pane: 'pane_Geomorph_Current_2',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(172,60,180,0.5)',
+                            interactive: true,
+                    }
+                    break;
+            }
+        }
+        map.createPane('pane_Geomorph_Current_2');
+        map.getPane('pane_Geomorph_Current_2').style.zIndex = 402;
+        map.getPane('pane_Geomorph_Current_2').style['mix-blend-mode'] = 'normal';
+        var layer_Geomorph_Current_2 = new L.geoJson(json_Geomorph_Current_2, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Geomorph_Current_2',
+            layerName: 'layer_Geomorph_Current_2',
+            pane: 'pane_Geomorph_Current_2',
+            onEachFeature: pop_Geomorph_Current_2,
+            style: style_Geomorph_Current_2_0,
+        });
+        bounds_group.addLayer(layer_Geomorph_Current_2);
+        map.addLayer(layer_Geomorph_Current_2);
+
+        function pop_Complex_ZOI_3(feature, layer) {
+            var popupContent = '<table>\
+                    <tr>\
+                        <td colspan="2">' + (feature.properties['Id'] !== null ? autolinker.link(feature.properties[
+                'Id'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">ComplexID</th>\
+                        <td>' + (feature.properties['ComplexID'] !== null ? autolinker.link(feature.properties[
+                'ComplexID'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <td colspan="2"><strong>Comp_Obj</strong><br />' + (feature.properties['Comp_Obj'] !== null ?
+                autolinker.link(feature.properties['Comp_Obj'].toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Phase</th>\
+                        <td>' + (feature.properties['Phase'] !== null ? autolinker.link(feature.properties['Phase']
+                .toLocaleString()) : '') + '</td>\
+                    </tr>\
+                    <tr>\
+                        <th scope="row">Area_ac</th>\
+                        <td>' + (feature.properties['Area_ac'] !== null ? autolinker.link(feature.properties['Area_ac']
+                .toLocaleString()) : '') + '</td>\
+                    </tr>\
+                </table>';
+            layer.bindPopup(popupContent, {
+                maxHeight: 400
+            });
+        }
+
+        function style_Complex_ZOI_3_0(feature) {
+            switch (String(feature.properties['Comp_Obj'])) {
+                case 'Aggradation and avulsion':
+                    return {
+                        pane: 'pane_Complex_ZOI_3',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(12,209,170,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Lateral channel migration':
+                    return {
+                        pane: 'pane_Complex_ZOI_3',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(184,27,223,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Overbank flow dispersion':
+                    return {
+                        pane: 'pane_Complex_ZOI_3',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(200,32,65,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Pond and wetland creation':
+                    return {
+                        pane: 'pane_Complex_ZOI_3',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(147,226,127,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                case 'Widening and aggrading':
+                    return {
+                        pane: 'pane_Complex_ZOI_3',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(80,109,224,0.5)',
+                            interactive: true,
+                    }
+                    break;
+                default:
+                    return {
+                        pane: 'pane_Complex_ZOI_3',
+                            opacity: 1,
+                            color: 'rgba(35,35,35,1.0)',
+                            dashArray: '',
+                            lineCap: 'butt',
+                            lineJoin: 'miter',
+                            weight: 1.0,
+                            fill: true,
+                            fillOpacity: 1,
+                            fillColor: 'rgba(236,218,133,0.5)',
+                            interactive: true,
+                    }
+                    break;
+            }
+        }
+        map.createPane('pane_Complex_ZOI_3');
+        map.getPane('pane_Complex_ZOI_3').style.zIndex = 403;
+        map.getPane('pane_Complex_ZOI_3').style['mix-blend-mode'] = 'normal';
+        var layer_Complex_ZOI_3 = new L.geoJson(json_Complex_ZOI_3, {
+            attribution: '',
+            interactive: true,
+            dataVar: 'json_Complex_ZOI_3',
+            layerName: 'layer_Complex_ZOI_3',
+            pane: 'pane_Complex_ZOI_3',
+            onEachFeature: pop_Complex_ZOI_3,
+            style: style_Complex_ZOI_3_0,
+        });
+        bounds_group.addLayer(layer_Complex_ZOI_3);
+        map.addLayer(layer_Complex_ZOI_3);
+        var baseMaps = {};
+        L.control.layers(baseMaps, {
+            'Complex_ZOI<br /><table><tr><td style="text-align: center;"><img src="legend/Complex_ZOI_3_Aggradationandavulsion0.png" /></td><td>Aggradation and avulsion</td></tr><tr><td style="text-align: center;"><img src="legend/Complex_ZOI_3_Lateralchannelmigration1.png" /></td><td>Lateral channel migration</td></tr><tr><td style="text-align: center;"><img src="legend/Complex_ZOI_3_Overbankflowdispersion2.png" /></td><td>Overbank flow dispersion</td></tr><tr><td style="text-align: center;"><img src="legend/Complex_ZOI_3_Pondandwetlandcreation3.png" /></td><td>Pond and wetland creation</td></tr><tr><td style="text-align: center;"><img src="legend/Complex_ZOI_3_Wideningandaggrading4.png" /></td><td>Widening and aggrading</td></tr><tr><td style="text-align: center;"><img src="legend/Complex_ZOI_3_5.png" /></td><td></td></tr></table>': layer_Complex_ZOI_3,
+            'Geomorph_Current<br /><table><tr><td style="text-align: center;"><img src="legend/Geomorph_Current_2_0.png" /></td><td></td></tr><tr><td style="text-align: center;"><img src="legend/Geomorph_Current_2_ActiveChannel1.png" /></td><td>Active Channel</td></tr><tr><td style="text-align: center;"><img src="legend/Geomorph_Current_2_DisconnectedFloodplain2.png" /></td><td>Disconnected Floodplain</td></tr><tr><td style="text-align: center;"><img src="legend/Geomorph_Current_2_Floodplain3.png" /></td><td>Floodplain</td></tr></table>': layer_Geomorph_Current_2,
+            'CEMArea_Current<br /><table><tr><td style="text-align: center;"><img src="legend/CEMArea_Current_1_Stage20.png" /></td><td>Stage 2</td></tr><tr><td style="text-align: center;"><img src="legend/CEMArea_Current_1_Stage51.png" /></td><td>Stage 5</td></tr><tr><td style="text-align: center;"><img src="legend/CEMArea_Current_1_Stage72.png" /></td><td>Stage 7</td></tr><tr><td style="text-align: center;"><img src="legend/CEMArea_Current_1_3.png" /></td><td></td></tr></table>': layer_CEMArea_Current_1,
+            'Structure_Points<br /><table><tr><td style="text-align: center;"><img src="legend/Structure_Points_0_BDA0.png" /></td><td>BDA</td></tr><tr><td style="text-align: center;"><img src="legend/Structure_Points_0_PALS1.png" /></td><td>PALS</td></tr><tr><td style="text-align: center;"><img src="legend/Structure_Points_0_2.png" /></td><td></td></tr></table>': cluster_Structure_Points_0,
+        }).addTo(map);
+        setBounds();
+    </script>
+</body>
+
+</html>
